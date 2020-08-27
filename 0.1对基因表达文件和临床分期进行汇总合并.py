@@ -46,22 +46,23 @@ def get_stage_num(xx):
         return 4
     
 if __name__ == '__main__':
-    curpath = os.getcwd()
+    curpath = os.getcwd() #获取当前工作目录
     num_all = 0
     with open(curpath11+"\\metadata.json",'r') as fp1:
         content1=fp1.read()
-        target = json.loads(content1)
-        myList[-2][0] = 'cancer'
+        target = json.loads(content1) #还原本身格式，文件中是字符串，还原成字典或者其他
+        myList[-2][0] = 'cancer'  #获取信息癌症、分期
         myList[-1][0] = 'stage'
-        os.chdir(curpath+"\\LUSC METHY")
+        os.chdir(curpath+"\\LUSC METHY") #修改当前工作目录
         with open(curpath+"\\gdc_manifest.txt",'r') as fp:
             for content in fp.readlines():
-                name = content.split("\t")
+                name = content.split("\t")  #删除回车
                 if(len(name[0])<20):continue
                 for xx in target:
-                    #if(num_all==991):continue
+                    # target = json.loads(content1)包含分期癌症信息
+                    # if(num_all==991):continue
                     if(xx["file_id"]==name[0]):
-                        TCGA_ID = xx["associated_entities"][0]["entity_submitter_id"]
+                        TCGA_ID = xx["associated_entities"][0]["entity_submitter_id"] #associated 关联 entities 实体 提交
                         IsCancer = int(TCGA_ID[13:15])
                         if(IsCancer<11):
                             myList[-2][num_all+1] = 1    #癌症部位用1，癌旁用0
